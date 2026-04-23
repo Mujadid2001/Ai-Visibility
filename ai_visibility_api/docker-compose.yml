@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_APP=wsgi.py
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://aivis:aivis@db:5432/ai_visibility_api
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    command: python run.py
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=aivis
+      - POSTGRES_PASSWORD=aivis
+      - POSTGRES_DB=ai_visibility_api
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
