@@ -1,5 +1,6 @@
 """Tests for AI agents."""
 import pytest
+import os
 from unittest.mock import patch, MagicMock
 from app.agents.discovery import QueryDiscoveryAgent
 from app.agents.scoring import VisibilityScoringAgent
@@ -10,6 +11,7 @@ from app.utils.scoring import calculate_opportunity_score
 class TestQueryDiscoveryAgent:
     """Test the Query Discovery Agent."""
     
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"})
     @patch('app.agents.base.BaseAgent.call_llm')
     def test_discovery_returns_valid_queries(self, mock_call_llm):
         """Test that discovery agent returns valid query list."""
@@ -35,6 +37,7 @@ class TestQueryDiscoveryAgent:
         assert len(result["queries"]) == 2
         assert result["queries"][0]["query_text"] == "What is the best SEO tool?"
     
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"})
     @patch('app.agents.base.BaseAgent.call_llm')
     def test_discovery_handles_malformed_json(self, mock_call_llm):
         """Test that discovery agent handles malformed JSON."""
@@ -56,6 +59,7 @@ class TestQueryDiscoveryAgent:
 class TestVisibilityScoringAgent:
     """Test the Visibility Scoring Agent."""
     
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"})
     @patch('app.agents.base.BaseAgent.call_llm')
     def test_scoring_returns_valid_scores(self, mock_call_llm):
         """Test that scoring agent returns valid score data."""
@@ -81,6 +85,7 @@ class TestVisibilityScoringAgent:
         assert result["competitive_difficulty"] == 65
         assert result["domain_would_appear"] is True
     
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"})
     @patch('app.agents.base.BaseAgent.call_llm')
     def test_scoring_normalizes_values(self, mock_call_llm):
         """Test that scoring agent normalizes out-of-range values."""
@@ -108,6 +113,7 @@ class TestVisibilityScoringAgent:
 class TestContentRecommendationAgent:
     """Test the Content Recommendation Agent."""
     
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"})
     @patch('app.agents.base.BaseAgent.call_llm')
     def test_recommendation_returns_valid_recommendations(self, mock_call_llm):
         """Test that recommendation agent returns valid recommendations."""
@@ -137,6 +143,7 @@ class TestContentRecommendationAgent:
         assert len(result["recommendations"]) == 1
         assert result["recommendations"][0]["content_type"] == "blog_post"
     
+    @patch.dict(os.environ, {"OPENAI_API_KEY": "test-key"})
     @patch('app.agents.base.BaseAgent.call_llm')
     def test_recommendation_handles_missing_fields(self, mock_call_llm):
         """Test that recommendation agent handles incomplete recommendations."""

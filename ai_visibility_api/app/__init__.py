@@ -42,8 +42,8 @@ def create_app(config_name: str = None) -> Flask:
     
     # Register blueprints
     from app.api import profiles_bp, queries_bp
-    app.register_blueprint(profiles_bp.bp)
-    app.register_blueprint(queries_bp.bp)
+    app.register_blueprint(profiles_bp)
+    app.register_blueprint(queries_bp)
     
     # Setup logging
     if not app.debug and not app.testing:
